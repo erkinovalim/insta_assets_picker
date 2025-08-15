@@ -84,14 +84,8 @@ class _CameraPickerState extends State<CameraPicker> {
         if (isVideo) {
           entity = await PhotoManager.editor.saveVideo(file, title: title);
         } else {
-          // NOTE: for some unknown reason, when an asset is saved
-          // from a picture took with `camera` package, it size is inversed.
-          final wrongSizeEntity = await PhotoManager.editor
+          entity = await PhotoManager.editor
               .saveImageWithPath(file.path, title: title);
-          // TEMP FIX: Fetching it one more time seems to fix the issue
-          if (wrongSizeEntity != null) {
-            entity = await AssetEntity.fromId(wrongSizeEntity.id);
-          }
         }
       } else {
         debugPrint(
@@ -116,7 +110,7 @@ class _CameraPickerState extends State<CameraPicker> {
             pickerTheme: widget.getPickerTheme(context),
             actionsBuilder: (
               BuildContext context,
-              ThemeData? pickerTheme,
+              ThemeData pickerTheme,
               double height,
               VoidCallback unselectAll,
             ) =>

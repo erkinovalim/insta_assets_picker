@@ -30,7 +30,7 @@ const _kActionsPadding = EdgeInsets.symmetric(horizontal: 8, vertical: 8);
 
 typedef InstaPickerActionsBuilder = List<Widget> Function(
   BuildContext context,
-  ThemeData? pickerTheme,
+  ThemeData pickerTheme,
   double height,
   VoidCallback unselectAll,
 );
@@ -65,6 +65,7 @@ class InstaAssetPickerBuilder extends DefaultAssetPickerBuilderDelegate {
           previewThumbnailSize: config.previewThumbnailSize,
           pathNameBuilder: config.pathNameBuilder,
           shouldRevertGrid: false,
+          dragToSelect: false, // not yet supported with the inst_picker
         );
 
   /// The text title in the picker [AppBar].
@@ -382,7 +383,7 @@ class InstaAssetPickerBuilder extends DefaultAssetPickerBuilderDelegate {
   /// Returns the list ofactions that are displayed on top of the assets grid view
   Widget _buildActions(BuildContext context) {
     final double height = _kPathSelectorRowHeight - _kActionsPadding.vertical;
-    final ThemeData? theme = pickerTheme?.copyWith(
+    final ThemeData actionTheme = theme.copyWith(
       buttonTheme: const ButtonThemeData(padding: EdgeInsets.all(8)),
     );
 
@@ -401,14 +402,14 @@ class InstaAssetPickerBuilder extends DefaultAssetPickerBuilderDelegate {
                     mainAxisSize: MainAxisSize.min,
                     children: actionsBuilder!(
                       context,
-                      theme,
+                      actionTheme,
                       height,
                       unSelectAll,
                     ),
                   )
                 : InstaPickerCircleIconButton.unselectAll(
                     onTap: unSelectAll,
-                    theme: theme,
+                    theme: actionTheme,
                     size: height,
                   ),
           ],
@@ -593,7 +594,7 @@ class InstaAssetPickerBuilder extends DefaultAssetPickerBuilderDelegate {
                                     ),
                                   ),
                                 ),
-                                theme: pickerTheme,
+                                theme: theme,
                               ),
                             ),
                             _buildActions(context),
@@ -904,7 +905,7 @@ class InstaAssetPickerBuilder extends DefaultAssetPickerBuilderDelegate {
             : Border.all(color: theme.unselectedWidgetColor, width: 1.0),
         color: isSelected
             ? themeColor
-            : theme.unselectedWidgetColor.withOpacity(.2),
+            : theme.unselectedWidgetColor.withValues(alpha: .2),
         shape: BoxShape.circle,
       ),
       child: FittedBox(
