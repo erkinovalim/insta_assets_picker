@@ -17,10 +17,12 @@ dependencies:
   flutter:
     sdk: flutter
 
-  insta_assets_crop: ^0.1.0 # custom package from image_crop
+  insta_assets_crop: 
+    path: "/Users/alim/Development/GitHub Repositories/insta_assets_crop"
   fraction: ^5.0.3 # to show crop ratio in crop view
 
-  wechat_assets_picker: ^9.2.2
+  wechat_assets_picker: 
+    path: "/Users/alim/Development/GitHub Repositories/flutter_wechat_assets_picker"
 
   # match with wechat_assets_picker package
   photo_manager: ^3.0.0
